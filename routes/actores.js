@@ -9,7 +9,6 @@ const { bodySchema } = require('../schemas/actor')
 router.get('/actor', async (req, res) => {
   let cliente = await pool.connect()
   const { user, password } = req.query
-
   try {
     let result = await cliente.query(
       `SELECT * FROM actores WHERE contrasena = $1 AND correo = $2`,
@@ -23,6 +22,25 @@ router.get('/actor', async (req, res) => {
     cliente.release(true)
   }
 })
+
+router.get('/actor/:id', async (req, res) => {
+  let cliente = await pool.connect()
+  const { id } = req.params
+  try {
+    let result = await cliente.query(
+      `SELECT * FROM actores WHERE id = $1`,
+      [id]
+    )
+    res.json(result.rows)
+  } catch (err) {
+    console.log({ err })
+    res.status(500).json({ error: 'Internal error server' })
+  } finally {
+    cliente.release(true)
+  }
+})
+
+
 
 router.post('/actor', validator.body(bodySchema), async (req, res) => {
   try {
