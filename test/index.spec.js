@@ -11,7 +11,7 @@ test("Retorne un array de los actores", async () => {
     expect(response.body).toBeInstanceOf(Array);
 })
 
-test("Retorne un actor pelo id", async () => {
+test("Retorne un actor por el id", async () => {
     const user =[{
         id: 2,
         documento: "11348473389",
